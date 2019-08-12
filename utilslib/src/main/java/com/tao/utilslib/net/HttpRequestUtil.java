@@ -166,7 +166,7 @@ public class HttpRequestUtil {
         void onSuccessBody(Call call, Response response) throws IOException;
     }
 
-    enum RequestType {
+    public enum RequestType {
         string, stream, body, json
     }
 
