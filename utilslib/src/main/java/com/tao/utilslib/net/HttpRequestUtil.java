@@ -174,11 +174,11 @@ public class HttpRequestUtil {
         RequestType type;
         Class<T> clazz;
 
-        private OnReques(RequestType type) {
+        public OnReques(RequestType type) {
             this.type = type;
         }
 
-        private OnReques(RequestType type, Class<T> clazz) {
+        public OnReques(RequestType type, Class<T> clazz) {
             this.type = type;
             this.clazz = clazz;
         }
