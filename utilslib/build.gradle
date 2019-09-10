@@ -28,6 +28,6 @@ dependencies {
     api group: 'commons-codec', name: 'commons-codec', version: '1.10'
     api 'com.squareup.okhttp3:okhttp:3.8.1'
     api 'com.squareup.okio:okio:1.15.0'
-    api 'com.google.code.gson:gson:2.2.4'
+   
 
 }

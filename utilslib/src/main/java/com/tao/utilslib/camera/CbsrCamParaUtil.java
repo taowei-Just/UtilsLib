@@ -1,4 +1,4 @@
-package com.tao.utils.camera;
+package com.tao.utilslib.camera;
 
 import android.hardware.Camera.Size;
 import android.util.Log;
