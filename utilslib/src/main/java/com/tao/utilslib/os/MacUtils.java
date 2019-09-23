@@ -25,6 +25,9 @@ import java.util.Enumeration;
 
 public class MacUtils {
 
+    public MacUtils() {
+    }
+
     public static String getMac(Context context) {
 
         String strMac = null;
@@ -123,7 +126,7 @@ public class MacUtils {
         return macSerial;
     }
 
-    private static String getMacAddress0(Context context) {
+    public static String getMacAddress0(Context context) {
         if (isAccessWifiStateAuthorized(context)) {
             WifiManager wifiMgr = (WifiManager) context
                     .getSystemService(Context.WIFI_SERVICE);
@@ -147,7 +150,7 @@ public class MacUtils {
      * @param context
      * @return
      */
-    private static boolean isAccessWifiStateAuthorized(Context context) {
+    public static boolean isAccessWifiStateAuthorized(Context context) {
         if (PackageManager.PERMISSION_GRANTED == context
                 .checkCallingOrSelfPermission("android.permission.ACCESS_WIFI_STATE")) {
             Log.e("----->" + "NetInfoManager", "isAccessWifiStateAuthorized:"
@@ -157,14 +160,14 @@ public class MacUtils {
             return false;
     }
 
-    private static String loadFileAsString(String fileName) throws Exception {
+    public static String loadFileAsString(String fileName) throws Exception {
         FileReader reader = new FileReader(fileName);
         String text = loadReaderAsString(reader);
         reader.close();
         return text;
     }
 
-    private static String loadReaderAsString(Reader reader) throws Exception {
+    public static String loadReaderAsString(Reader reader) throws Exception {
         StringBuilder builder = new StringBuilder();
         char[] buffer = new char[4096];
         int readLength = reader.read(buffer);
@@ -208,7 +211,7 @@ public class MacUtils {
      *
      * @return
      */
-    private static InetAddress getLocalInetAddress() {
+    public static InetAddress getLocalInetAddress() {
         InetAddress ip = null;
         try {
             // 列举
@@ -243,7 +246,7 @@ public class MacUtils {
      *
      * @return
      */
-    private static String getLocalIpAddress() {
+    public static String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface
                     .getNetworkInterfaces(); en.hasMoreElements(); ) {
@@ -302,7 +305,7 @@ public class MacUtils {
      * @param bytes
      * @return
      */
-    private static String bytesToString(byte[] bytes) {
+    public static String bytesToString(byte[] bytes) {
         if (bytes == null || bytes.length == 0) {
             return null;
         }
@@ -344,7 +347,7 @@ public class MacUtils {
         return result;
     }
 
-    private static String callCmd(String cmd, String filter) {
+    public static String callCmd(String cmd, String filter) {
         String result = "";
         String line = "";
         try {
