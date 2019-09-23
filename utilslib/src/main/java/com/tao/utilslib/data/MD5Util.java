@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -22,19 +23,50 @@ import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
 
- 
-    public  static  String   md5FromFile (String path, boolean upper) throws IOException {
+
+    public static String md5FromFile(String path, boolean upper) throws IOException {
         FileInputStream fis = new FileInputStream(path);
 //        String md5 = new String(Hex.encodeHex(DigestUtils.md5(getByteFromFile(fis))));
         String md5ByFile = getMd5ByFile(new File(path));
-        return upper ?md5ByFile.toUpperCase() : md5ByFile.toLowerCase();
-    } 
-    
-    public  static  String   md5FromStream(InputStream fis, boolean upper) throws IOException {
+        return upper ? md5ByFile.toUpperCase() : md5ByFile.toLowerCase();
+    }
+
+    public static String md5FromStream(InputStream fis, boolean upper) throws IOException {
         String md5 = new String(Hex.encodeHex(DigestUtils.md5(fis)));
         return upper ? md5.toString().toUpperCase() : md5.toString();
     }
 
+    public static String getMD5fromBigFile(File inputFile) throws Exception {
+
+        // 缓冲区大小（这个可以抽出一个参数）     
+        int bufferSize = 256 * 1024;
+        FileInputStream fileInputStream = null;
+        DigestInputStream digestInputStream = null;
+
+        try {
+            // 拿到一个MD5转换器（同样，这里可以换成SHA1）      
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            // 使用DigestInputStream      
+            fileInputStream = new FileInputStream(inputFile);
+            digestInputStream = new DigestInputStream(fileInputStream, messageDigest);
+            // read的过程中进行MD5处理，直到读完文件     
+            byte[] buffer = new byte[bufferSize];
+            while (digestInputStream.read(buffer) > 0) ;
+            // 获取最终的MessageDigest     
+            messageDigest = digestInputStream.getMessageDigest();
+            // 拿到结果，也是字节数组，包含16个元素     
+            byte[] resultByteArray = messageDigest.digest();
+            // 同样，把字节数组转换成字符串      
+            return SerilbyteUtil.bytes2HexString(resultByteArray);
+        }   finally {
+            try {
+                digestInputStream.close();
+                fileInputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static String getMd5ByFile(File file) throws FileNotFoundException {
         String value = null;
@@ -59,15 +91,15 @@ public class MD5Util {
                 }
             }
 
-    
+
 //            BigInteger bi = new BigInteger(1, digest);
 //            value = bi.toString(16);
-            value =buffer.toString().toUpperCase();
-            
+            value = buffer.toString().toUpperCase();
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(null != in) {
+            if (null != in) {
                 try {
                     in.close();
                 } catch (IOException e) {
@@ -79,9 +111,9 @@ public class MD5Util {
     }
 
 
-
-
-    /**Md5字符串加密
+    /**
+     * Md5字符串加密
+     *
      * @param string
      * @return
      */
@@ -112,8 +144,7 @@ public class MD5Util {
     /**
      * 对字符串BASE64编码
      *
-     * @param res
-     *            源字符串
+     * @param res 源字符串
      * @return String
      */
     public static String encode(String res) {
@@ -149,13 +180,12 @@ public class MD5Util {
     /**
      * BASE64字符串解码
      *
-     * @param str
-     *            BASE64字符串
+     * @param str BASE64字符串
      * @return String
      */
     public static String decode(String str) {
         try {
-            byte[] bytes= new Base64().decode(str.getBytes());
+            byte[] bytes = new Base64().decode(str.getBytes());
             return new String(bytes);
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,5 +193,25 @@ public class MD5Util {
         return null;
     }
 
+    public static void main(String[] args) {
+
+
+        long l = System.currentTimeMillis();
+        try {
+            String md5ByFile = getMd5ByFile(new File("C:\\Project\\Android\\Work\\TobaccoQD\\build\\outputs\\apk\\release\\2019年09月23日\\智能烟草机_108000_1.1.0.apk"));
+            System.err.println(" 01 " + md5ByFile  + " " + (System.currentTimeMillis()-l));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            l = System.currentTimeMillis();
+            String md5fromBigFile = getMD5fromBigFile(new File("C:\\Project\\Android\\Work\\TobaccoQD\\build\\outputs\\apk\\release\\2019年09月23日\\智能烟草机_108000_1.1.0.apk"));
+            System.err.println(" 01 " + md5fromBigFile  + " " + (System.currentTimeMillis()-l));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

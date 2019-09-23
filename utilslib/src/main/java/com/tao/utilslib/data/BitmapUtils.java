@@ -59,20 +59,7 @@ public class BitmapUtils {
 
 		ImageLoader.getInstance().init(config);
 	}
-
-	public static boolean checkLocalImg(String url) {
-
-		String nameForURl = PictureLoaderThread.getNameForURl(url);
-		File file = new File(Gloable.PicturePath + "/" + nameForURl);
-		if (file.exists()) {
-
-			return true;
-		}
-
-		return false;
-
-	}
-
+ 
 	public static  Bitmap getDiskBitmap(String pathString) {
 		Bitmap bitmap = null;
 		try {

@@ -17,7 +17,28 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+    
+        def projectname = "utils"
+
+        libraryVariants.all { variant ->
+            variant.outputs.all {
+
+                if (variant.buildType.name.equals('release')) {
+                    def fileName =   new File("../release/",  projectname+"-"+defaultConfig.versionName+".aar")
+                    outputFileName = fileName
+          
+                } else if (variant.buildType.name.equals('debug')) {
+                    def fileName =  new File("../debug/", projectname+"-debug.aar")
+                    outputFileName = fileName
+               
+                }
+            }
+        }
+
     }
+
+ 
 }
 
 dependencies {
@@ -28,6 +49,7 @@ dependencies {
     api group: 'commons-codec', name: 'commons-codec', version: '1.10'
     api 'com.squareup.okhttp3:okhttp:3.8.1'
     api 'com.squareup.okio:okio:1.15.0'
-   
+    api 'com.google.code.gson:gson:2.2.4'
+
 
 }
