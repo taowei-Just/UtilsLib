@@ -8,7 +8,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
-        versionName "1.8"
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -18,20 +18,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         def projectname = "utils"
-//        libraryVariants.all { variant ->
-//            variant.outputs.all {
-//
-//                if (variant.buildType.name.equals('release')) {
-//                    def fileName =   new File("../release/",  projectname+"-"+defaultConfig.versionName+".aar")
-//                    outputFileName = fileName
-//
-//                } else if (variant.buildType.name.equals('debug')) {
-//                    def fileName =  new File("../debug/", projectname+"-debug.aar")
-//                    outputFileName = fileName
-//
-//                }
-//            }
-//        }
+        libraryVariants.all { variant ->
+            variant.outputs.all {
+
+                if (variant.buildType.name.equals('release')) {
+                    def fileName =   new File("../release/",  projectname+"-"+defaultConfig.versionName+".aar")
+                    outputFileName = fileName
+
+                } else if (variant.buildType.name.equals('debug')) {
+                    def fileName =  new File("../debug/", projectname+"-debug.aar")
+                    outputFileName = fileName
+
+                }
+            }
+        }
 
     }
 
@@ -44,9 +44,10 @@ dependencies {
 
     api files('libs/universal-image-loader-1.9.5.jar')
     api group: 'commons-codec', name: 'commons-codec', version: '1.10'
-    api 'com.squareup.okhttp3:okhttp:3.8.1'
-    api 'com.squareup.okio:okio:1.15.0'
-    api 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.okio:okio:1.15.0'
+    implementation 'com.google.code.gson:gson:2.2.4'
+    
 
 
 }

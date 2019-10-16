@@ -47,29 +47,37 @@ public class FileUtil {
      * @param newPath String 复制后路径 如：f:/fqf.txt
      * @return boolean
      */
-    public static void copyFile(String oldPath, String newPath) {
-        try {
-            int bytesum = 0;
-            int byteread = 0;
-            File oldfile = new File(oldPath);
-            if (oldfile.exists()) { //文件存在时
-                InputStream inStream = new FileInputStream(oldPath); //读入原文件
-                FileOutputStream fs = new FileOutputStream(newPath);
+    public static boolean copyFile(String oldPath, String newPath) throws Exception {
+
+        int bytesum = 0;
+        int byteread = 0;
+        File oldfile = new File(oldPath);
+        if (oldfile.exists()) { //文件存在时
+
+            File file = new File(newPath);
+            if (!file.exists()){
+                file.getParentFile().mkdirs();
+            }
+            InputStream inStream = new FileInputStream(oldPath); //读入原文件
+            FileOutputStream fs = new FileOutputStream(file);
+            try {
                 byte[] buffer = new byte[1444];
                 int length;
                 while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread; //字节数 文件大小
-//                    System.out.println(bytesum);
+    //                    System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
+            } finally {
                 inStream.close();
+                fs.close();
             }
-        } catch (Exception e) {
-            System.out.println("复制单个文件操作出错");
-            e.printStackTrace();
-
+  
+        }else {
+            return false;
         }
 
+        return true;
     }
 
 
@@ -77,20 +85,20 @@ public class FileUtil {
         if (file != null && file.exists()) {
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
-                if (files!=null)
-                for (File f : files) {
-                    if (f.exists()) {
-                        if (f.isDirectory()) {
-                            deleteFIle(f);
-                        } else {
-                            try {
-                                f.delete();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                if (files != null)
+                    for (File f : files) {
+                        if (f.exists()) {
+                            if (f.isDirectory()) {
+                                deleteFIle(f);
+                            } else {
+                                try {
+                                    f.delete();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
             }
         } else {
 
